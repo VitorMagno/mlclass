@@ -30,15 +30,24 @@ print(' - Criando X e y para o algoritmo de aprendizagem a partir do arquivo dia
 # colunas com mtos NAs retiradas
 cols = ['Pregnancies', 'Glucose', 'BloodPressure', 'BMI', 'DiabetesPedigreeFunction', 'Age', 'Outcome']
 data_modified = data[cols]
+data_modified.shape
+#%%
+data_modified.isna().sum()
+data_modified = data_modified.dropna(axis=0)
 #%%
 # retiradas linhas com NAs restantes
-data_modified = data_modified.dropna()
-data_modified.isna().sum()
+data_modified.shape
+#%%
+print("Agora vamos normalizar os dados")
+for column in data_modified:
+        data_modified[column] = (data_modified[column] - data_modified[column].min())/(data_modified[column].max() -data_modified[column].min())
+
+data_modified.boxplot(figsize=(15,10))
+plt.show()
 #%%
 feature_cols =['Pregnancies', 'Glucose', 'BloodPressure', 'BMI', 'DiabetesPedigreeFunction', 'Age']
 X = data_modified[feature_cols]
 y = data_modified.Outcome
-
 
 #%%
 # Ciando o modelo preditivo para a base trabalhada
