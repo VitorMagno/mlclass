@@ -8,7 +8,7 @@ no servidor.
 
 @author: Aydano Machado <aydano.machado@gmail.com>
 """
-
+#%%
 import pandas as pd
 from sklearn.neighbors import KNeighborsClassifier
 import requests
@@ -21,9 +21,31 @@ print(' - Criando X e y para o algoritmo de aprendizagem a partir do arquivo dia
 # Caso queira modificar as colunas consideradas basta algera o array a seguir.
 feature_cols = ['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 
                 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age']
-X = data[feature_cols]
-y = data.Outcome
 
+#%%
+data.info()
+#%%
+data.describe()
+#%%
+data.boxplot(figsize=(15,10))
+plt.show()
+#%%
+print("Tirando as linhas com NAs")
+data_modified = data.dropna()
+data_modified.boxplot(figsize=(15,10))
+plt.show()
+#%%
+print("Agora vamos normalizar os dados")
+for column in data_modified:
+        data_modified[column] = (data_modified[column] - data_modified[column].min())/(data_modified[column].max() -data_modified[column].min())
+#%%
+data_modified.boxplot(figsize=(15,10))
+plt.show()
+#%%
+data_modified.describe()
+# %%
+X = data_modified[feature_cols]
+y = data_modified.Outcome
 # Ciando o modelo preditivo para a base trabalhada
 print(' - Criando modelo preditivo')
 neigh = KNeighborsClassifier(n_neighbors=3)
